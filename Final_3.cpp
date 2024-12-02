@@ -5,12 +5,14 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <limits>
 #include <iomanip>
-#include "Final_2.cpp"
-
+#include <algorithm>
+#include "r1.cpp"
+ using namespace std;
 class Health_Profile_Manager {
 private:
-    vector<Health_Profile> profiles;
+    vector<Health_Profile> profiles; //A dynamic array that manages the collection of data 
 
 public:
     // Menu
@@ -18,31 +20,33 @@ public:
         int choice;
         do {
             cout << "\n--- Health Profile Manager ---\n";
+            cout << "This is necessary for doctors to keep track of patient health profiles." << endl;
+            cout << "Please select an option:" << endl;
             cout << "1. Create Profile\n";
             cout << "2. View Profile(s)\n";
             cout << "3. Update Profile\n";
             cout << "4. Save Profiles to File\n";
             cout << "5. Load Profiles from File\n";
             cout << "6. Exit\n";
-            cout << "Choose an option: ";
+            cout << "Choose an option to proceed: ";
             cin >> choice;
 
             if (cin.fail()) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid input. Please enter a number.\n";
-                continue;
+                continue; // use of continue to skip the rest of the loop and start again
             }
 
-            switch (choice) {
+            switch (choice) { //use of switch case to handle different menu options
                 case 1:
-                    createProfile();
+                    create_profile();
                     break;
                 case 2:
-                    viewProfiles();
+                    view_profiles();
                     break;
                 case 3:
-                    updateProfile();
+                    update_profile();
                     break;
                 case 4:
                     saveToFile();
@@ -52,15 +56,15 @@ public:
                     break;
                 case 6:
                     cout << "Exiting program...\n";
-                    break;
+                    break; //use of break to exit the switch case and the loop
                 default:
                     cout << "Invalid choice. Try again.\n";
             }
-        } while (choice != 6);
+        } while (choice != 6); //use of do-while loop to keep the menu running until the user chooses to exit
     }
 
     // Create a Profile
-    void createProfile() {
+    void create_profile() { //Functions to manage profiles
         string name;
         double weight, height, temperature, sugar;
         int systolic, diastolic;
@@ -72,11 +76,11 @@ public:
         while (!(cin >> weight) || weight <= 0) {
             cout << "Invalid input. Enter a positive weight (kg): ";
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // When you want to clear any errors and unwanted inputs
         }
 
         cout << "Enter height (m): ";
-        while (!(cin >> height) || height <= 0) {
+        while (!(cin >> height) || height <= 0) { // use of input validations
             cout << "Invalid input. Enter a positive height (m): ";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -110,45 +114,45 @@ public:
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
 
-        profiles.emplace_back(name, weight, height, temperature, sugar, systolic, diastolic);
+        profiles.emplace_back(name, weight, height, temperature, sugar, systolic, diastolic); // Add the profile to the vector
         cout << "Profile created successfully!\n";
     }
 
     // View Profiles
-    void viewProfiles() {
+    void view_profiles() {
         string name;
         cout << "Enter the name(s) of profiles to view (comma-separated for multiple): ";
         cin.ignore();
-        getline(cin, name);
+        getline(cin, name); //to read the whole line
 
-        vector<string> selectedProfiles;
-        stringstream ss(name);
-        string token;
+        vector<string> selected_profiles; //here the vector is named as selected_profiles
+        stringstream ss(name); //to facilitate the splitting of the string into a vector of strings
+        string token; //to store each token (name) from the string
 
         while (getline(ss, token, ',')) {
-            selectedProfiles.push_back(token);
+            selected_profiles.push_back(token);
         }
 
-        for (const auto& profileName : selectedProfiles) {
+        for (const auto& profile_name : selected_profiles) {
             auto it = find_if(profiles.begin(), profiles.end(),
-                              [&](const Health_Profile& profile) { return profile.getName() == profileName; });
+                              [&](const Health_Profile& profile) { return profile.get_name() == profile_name; });
 
             if (it != profiles.end()) {
-                it->displayProfile();
+                it->display_profile();
             } else {
-                cout << "Profile with name '" << profileName <<"Profile with name '" << profileName << "' not found.\n";
+                cout << "Profile with name '" << profile_name <<"Profile with name '" << profile_name << "' not found.\n";
             }
         }
     }
 
     // Update a Profile
-    void updateProfile() {
+    void update_profile() {
         string name;
         cout << "Enter the name of the profile to update: ";
         cin >> name;
 
         auto it = find_if(profiles.begin(), profiles.end(),
-                          [&](const Health_Profile& profile) { return profile.getName() == name; });
+                          [&](const Health_Profile& profile) { return profile.get_name() == name; });
 
         if (it != profiles.end()) {
             double weight, height, temperature, sugar;
@@ -196,11 +200,11 @@ public:
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
 
-            it->setWeight(weight);
-            it->setHeight(height);
-            it->setBodyTemperature(temperature);
-            it->setBloodSugarLevel(sugar);
-            it->setBloodPressure(systolic, diastolic);
+            it->set_weight(weight);
+            it->set_height(height);
+            it->set_temperature(temperature);
+            it->set_blood_sugar(sugar);
+            it->set_blood_pressure(systolic, diastolic);
 
             cout << "Profile updated successfully!\n";
         } else {
@@ -217,13 +221,13 @@ public:
         }
 
         for (const auto& profile : profiles) {
-            file << "Name: " << profile.getName() << "\n";
-            file << "Weight: " << profile.getWeight() << "\n";
-            file << "Height: " << profile.getHeight() << "\n";
-            file << "Body Temperature: " << profile.getBodyTemperature() << "\n";
-            file << "Blood Sugar Level: " << profile.getBloodSugarLevel() << "\n";
-            file << "Blood Pressure: " << profile.getSystolicBP() << "/" << profile.getDiastolicBP() << "\n";
-            file << "BMI: " << profile.calculateBMI() << " (" << profile.bmiCategory() << ")\n";
+            file << "Name: " << profile.get_name() << "\n";
+            file << "Weight: " << profile.get_weight() << "Kg\n";
+            file << "Height: " << profile.get_height() << " m\n";
+            file << "Body Temperature: " << profile.get_temperature()<< " oC\n";
+            file << "Blood Sugar Level: " << profile.get_blood_sugar() << " mg/dL\n";
+            file << "Blood Pressure: " << profile.get_systolic_BP() << "/" << profile.get_diastolic_BP() << "\n";
+            file << "BMI: " << profile.calculate_BMI() << " (" << profile.bmi_category() << ")\n";
             file << "---------------------------------\n";
         }
 
