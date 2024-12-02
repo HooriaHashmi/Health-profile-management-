@@ -6,9 +6,8 @@
 #include <string>
 #include <algorithm>
 #include <limits>
-#include "Final_3.cpp"
-#include "Final_2.cpp"
-
+#include "r2.cpp"
+// #include "r1.cpp"
 using namespace std;
 
 int main() {
