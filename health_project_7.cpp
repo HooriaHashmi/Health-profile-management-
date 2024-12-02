@@ -16,7 +16,7 @@ private:
 
 public:
     // Constructor
-    HealthProfile(const string& name, double weight, double height, double temperature, double sugar_level)
+    Health_profile(const string& name, double weight, double height, double temperature, double sugar_level)
         : name(name), weight(weight), height(height), temperature(temperature), sugar_level(sugar_level) {}
 
     // Getter for name
@@ -37,14 +37,14 @@ public:
 // HealthProfileManager class definition
 class HealthProfileManager {
 private:
-    vector<HealthProfile> profiles;
+    vector<Health_profile> profiles;
 
 public:
-    void addProfile(const HealthProfile& profile) {
+    void add_profile(const Health_profile& profile) {
         profiles.push_back(profile);
     }
 
-    void viewProfile(const string& name) const {
+    void view_profile(const string& name) const {
         for (const auto& profile : profiles) {
             if (profile.get_Name() == name) {
                 profile.display_Profile();
@@ -54,10 +54,10 @@ public:
         cout << "Profile not found.\n";
     }
 
-    void deleteProfile(const string& name) {
+    void delete_profile(const string& name) {
         auto originalSize = profiles.size();
         profiles.erase(remove_if(profiles.begin(), profiles.end(),
-                                  [&name](const HealthProfile& p) { return p.get_Name() == name; }),
+                                  [&name](const Health_profile& p) { return p.get_Name() == name; }),
                        profiles.end());
         if (profiles.size() < originalSize) {
             cout << "Profile deleted.\n";
@@ -66,7 +66,7 @@ public:
         }
     }
 
-    void displayAllProfiles() const {
+    void display_all_profiles() const {
         if (profiles.empty()) {
             cout << "No profiles available.\n";
             return;
@@ -83,24 +83,24 @@ int main() {
     HealthProfileManager manager;
 
     // Adding profiles
-    manager.addProfile(HealthProfile("John Doe", 70.0, 1.75, 37.0, 90.0));
-    manager.addProfile(HealthProfile("Jane Smith", 65.0, 1.65, 36.5, 85.0));
+    manager.add_profile(Health_profile("John Doe", 70.0, 1.75, 37.0, 90.0));
+    manager.add_profile(Health_profile("Jane Smith", 65.0, 1.65, 36.5, 85.0));
 
     // Display all profiles
     cout << "All Profiles:\n";
-    manager.displayAllProfiles();
+    manager.display_all_profiles();
 
     // View a specific profile
     cout << "\nViewing Profile for John Doe:\n";
-    manager.viewProfile("John Doe");
+    manager.view_profile("John Doe");
 
     // Delete a profile
     cout << "\nDeleting Profile for Jane Smith:\n";
-    manager.deleteProfile("Jane Smith");
+    manager.delete_profile("Jane Smith");
 
     // Display all profiles again
     cout << "\nAll Profiles after deletion:\n";
-    manager.displayAllProfiles();
+    manager.display_all_profiles();
 
     return 0;
 }
