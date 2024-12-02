@@ -7,13 +7,13 @@ using namespace std;
 
 class HealthProfileManager {
 private:
-    vector<HealthProfile> profiles;
+    vector<Health_profile> profiles;
 
 public:
-    void addProfile(const HealthProfile& profile);
-    void viewProfile(const string& name) const;
-    void deleteProfile(const string& name);
-    void displayAllProfiles() const;
+    void add_profile(const Health_profile& profile);
+    void view_profile(const string& name) const;
+    void delete_profile(const string& name);
+    void display_all_profiles() const;
 };
 
 #endif
