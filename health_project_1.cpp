@@ -6,17 +6,17 @@
 #include <vector>
 using namespace std;
 
-class HealthProfile { //Class creation
+class Health_profile { //Class creation
 protected: //Declared as protected to be accessed by derived classes
     string name;
     double weight;
     double height;
     double temperature;
     double sugar_level; //Declaration
-    vector<string> weeklyRecord;
+    vector<string> weekly_record;
 
 public: //Declared as public to be accessed by all classes
-    HealthProfile(string name, double weight, double height, double temperature = 0.0, double sugar_level = 0.0);
+    Health_profile(string name, double weight, double height, double temperature = 0.0, double sugar_level = 0.0);
 
     void set_weight //void returning functions
     (double w); //setting the credentials
@@ -37,8 +37,8 @@ public: //Declared as public to be accessed by all classes
     string bmi_category() const;
     string temperature_status() const;
     string Sugar_status() const;
-    void display_Profile() const;
-    void store_Record();
+    void display_profile() const;
+    void store_record();
     void display_Weekly_Records() const;
 };
 
