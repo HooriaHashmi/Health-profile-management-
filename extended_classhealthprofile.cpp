@@ -73,7 +73,7 @@ private:
     
 
 
-    void displayProfile(){
+    void display_profile(){
         cout << setw(15) << "Name: " << name << "\n"
              << setw(15) << "Weight: " << weight << " kg\n"
              << setw(15) << "Height: " << height << " m\n"
